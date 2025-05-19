@@ -1,0 +1,400 @@
+{
+  "tasks": [
+    {
+      "id": "e1f4a40a-35a2-4f30-9770-6dc6f6363c53",
+      "name": "Tarefa 1: Configuração Inicial do Projeto e Estruturas de Dados",
+      "description": "Criar os arquivos 'app.py' e 'styles.tcss'. Em 'app.py', definir a classe principal 'TaskManagerApp(App)' com título e caminho para CSS. Implementar as estruturas de dados em memória para 'tarefas_ativas' (lista), 'tarefas_concluidas' (lista) e 'proximo_id_tarefa' (inteiro inicializado em 1) como atributos da classe 'TaskManagerApp'. Definir a estrutura de uma 'Tarefa' como um dicionário com 'id', 'descricao', 'prioridade', 'data_criacao'.",
+      "notes": "Seguir nomenclatura de 'shrimp-rules.md'. 'Tarefa' é um dicionário: {'id': int, 'descricao': str, 'prioridade': int, 'data_criacao': str (ISO 8601)}.",
+      "status": "已完成",
+      "dependencies": [],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:04:57.780Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "CREATE",
+          "description": "Arquivo principal da aplicação."
+        },
+        {
+          "path": "styles.tcss",
+          "type": "CREATE",
+          "description": "Arquivo de estilização TCSS."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para estrutura de dados e app.",
+          "lineStart": 9,
+          "lineEnd": 30
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "Referência para estrutura de arquivos e nomenclatura.",
+          "lineStart": 20,
+          "lineEnd": 38
+        }
+      ],
+      "implementationGuide": "Em 'app.py':\n```python\nfrom textual.app import App, ComposeResult\nfrom textual.widgets import Header, Footer # Adicionar outros imports conforme necessário\nimport datetime\n\nclass TaskManagerApp(App):\n    TITLE = \"Gerenciador de Tarefas Moderno\"\n    CSS_PATH = \"styles.tcss\"\n\n    def __init__(self):\n        super().__init__()\n        self.tarefas_ativas = []\n        self.tarefas_concluidas = []\n        self.proximo_id_tarefa = 1\n\n    # O método compose será adicionado em tarefas futuras\n    def compose(self) -> ComposeResult:\n        yield Header()\n        # Widgets principais serão adicionados aqui em tarefas subsequentes\n        yield Footer()\n\nif __name__ == \"__main__\":\n    app = TaskManagerApp()\n    app.run()\n```\nCriar um arquivo 'styles.tcss' vazio inicialmente.",
+      "verificationCriteria": "'app.py' e 'styles.tcss' criados. Classe 'TaskManagerApp' definida em 'app.py' com atributos 'tarefas_ativas', 'tarefas_concluidas', 'proximo_id_tarefa'. A aplicação pode ser executada mostrando um Header e Footer básicos (sem funcionalidade).",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 1 concluída: Arquivos 'app.py' e 'styles.tcss' criados. Classe TaskManagerApp definida com as estruturas de dados iniciais ('tarefas_ativas', 'tarefas_concluidas', 'proximo_id_tarefa'). A aplicação básica com Header e Footer pode ser executada.",
+      "completedAt": "2025-05-19T21:04:57.778Z"
+    },
+    {
+      "id": "2a46b66a-d1d2-4726-be1d-b76d700b9f32",
+      "name": "Tarefa 2: Implementação das Funções Lógicas de Gerenciamento de Tarefas",
+      "description": "Em 'app.py', implementar as funções lógicas: 'adicionar_tarefa_logica', 'obter_tarefas_ativas_logica', e 'marcar_tarefa_concluida_logica' como métodos da classe 'TaskManagerApp'. Essas funções devem operar sobre os atributos 'self.tarefas_ativas', 'self.tarefas_concluidas' e 'self.proximo_id_tarefa'.",
+      "notes": "Assegurar que 'obter_tarefas_ativas_logica' ordena corretamente por prioridade (ascendente) e data de criação (ascendente). 'marcar_tarefa_concluida_logica' deve remover da lista ativa e adicionar à concluída.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "e1f4a40a-35a2-4f30-9770-6dc6f6363c53"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:05:51.686Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Adicionar métodos lógicos à classe TaskManagerApp."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para a lógica das funções.",
+          "lineStart": 43,
+          "lineEnd": 63
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "Referência para nomenclatura de funções.",
+          "lineStart": 35,
+          "lineEnd": 35
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro da classe 'TaskManagerApp':\n```python\n# (continuação da classe TaskManagerApp)\n    def adicionar_tarefa_logica(self, descricao: str, prioridade: int) -> dict:\n        nova_tarefa = {\n            'id': self.proximo_id_tarefa,\n            'descricao': descricao,\n            'prioridade': prioridade,\n            'data_criacao': datetime.datetime.now().isoformat()\n        }\n        self.tarefas_ativas.append(nova_tarefa)\n        self.proximo_id_tarefa += 1\n        return nova_tarefa\n\n    def obter_tarefas_ativas_logica(self) -> list:\n        return sorted(\n            self.tarefas_ativas,\n            key=lambda t: (t['prioridade'], t['data_criacao'])\n        )\n\n    def marcar_tarefa_concluida_logica(self, id_tarefa: int) -> dict | None:\n        tarefa_encontrada = None\n        for tarefa in self.tarefas_ativas:\n            if tarefa['id'] == id_tarefa:\n                tarefa_encontrada = tarefa\n                break\n        if tarefa_encontrada:\n            self.tarefas_ativas.remove(tarefa_encontrada)\n            self.tarefas_concluidas.append(tarefa_encontrada)\n            return tarefa_encontrada\n        return None\n```",
+      "verificationCriteria": "As funções 'adicionar_tarefa_logica', 'obter_tarefas_ativas_logica', 'marcar_tarefa_concluida_logica' estão implementadas em 'app.py' e funcionam corretamente conforme testes unitários (conceituais, não requerem framework de teste formal nesta fase).",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 2 concluída: Métodos 'adicionar_tarefa_logica', 'obter_tarefas_ativas_logica', e 'marcar_tarefa_concluida_logica' implementados na classe TaskManagerApp em 'app.py'. A lógica de adicionar, obter (ordenado) e concluir tarefas está funcional.",
+      "completedAt": "2025-05-19T21:05:51.684Z"
+    },
+    {
+      "id": "5ef2a8b5-f11f-42b4-97ce-70537c2327e9",
+      "name": "Tarefa 3: Layout Básico da UI com Widgets de Adição de Tarefa",
+      "description": "Em 'app.py', modificar o método 'compose' da classe 'TaskManagerApp' para incluir os widgets da área de adicionar tarefa: 'Input' (id: 'input_descricao'), 'RadioSet' (id: 'radioset_prioridade' com opções para prioridades 1, 2, 3), e 'Button' (id: 'botao_adicionar' com texto 'Adicionar Tarefa').",
+      "notes": "O RadioSet deve ter opções claras. IDs dos widgets devem seguir 'shrimp-rules.md'.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "e1f4a40a-35a2-4f30-9770-6dc6f6363c53"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:06:39.277Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Modificar o método compose para adicionar widgets de input."
+        },
+        {
+          "path": "styles.tcss",
+          "type": "TO_MODIFY",
+          "description": "Adicionar seletores de ID para novos widgets."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para widgets da área de adicionar tarefa.",
+          "lineStart": 77,
+          "lineEnd": 80
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro de 'TaskManagerApp.compose()':\n```python\n# (imports necessários: Input, Button, RadioSet, RadioButton, Container de textual.widgets)\nfrom textual.widgets import Input, Button, RadioSet, RadioButton, Container, Static\n\n# ... dentro do método compose() ...\n        yield Header()\n        with Container(id=\"area_adicionar_tarefa\"):\n            yield Static(\"Nova Tarefa:\", classes=\"label_secao\")\n            yield Input(placeholder=\"Descrição da tarefa...\", id=\"input_descricao\")\n            yield RadioSet(\n                RadioButton(\"1 (Alta)\", id=\"prioridade_1\"), \n                RadioButton(\"2 (Média)\", id=\"prioridade_2\"), \n                RadioButton(\"3 (Baixa)\", id=\"prioridade_3\"),\n                id=\"radioset_prioridade\"\n            )\n            yield Button(\"Adicionar Tarefa\", id=\"botao_adicionar\")\n        # Área de listagem e Footer virão em tarefas subsequentes\n        yield Footer()\n```\nEm 'styles.tcss', adicionar seletores básicos para os novos IDs para evitar erros, mesmo que vazios inicialmente.",
+      "verificationCriteria": "A UI exibe o Header, a área de adicionar tarefa com Input, RadioSet e Botão, e o Footer. Nenhuma funcionalidade de clique ainda.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 3 concluída: Método 'compose' em 'app.py' atualizado para incluir Container 'area_adicionar_tarefa' com Static 'Nova Tarefa:', Input 'input_descricao', RadioSet 'radioset_prioridade' (com RadioButtons 'prioridade_1', 'prioridade_2', 'prioridade_3') e Button 'botao_adicionar'. Imports necessários adicionados. Seletores de ID básicos adicionados a 'styles.tcss'. A UI agora exibe a área de adição de tarefas.",
+      "completedAt": "2025-05-19T21:06:39.276Z"
+    },
+    {
+      "id": "ded268b0-3f53-44bd-a252-8262d081c477",
+      "name": "Tarefa 4: Layout da UI com Widgets de Listagem de Tarefas",
+      "description": "Em 'app.py', estender o método 'compose' para incluir os widgets da área de listagem de tarefas: 'Static' ou 'Label' (id: 'label_tarefas_pendentes') e 'ListView' (id: 'listview_tarefas'), e o 'Button' (id: 'botao_concluir' com texto 'Concluir Selecionada', inicialmente desabilitado).",
+      "notes": "O botão 'Concluir Selecionada' deve iniciar desabilitado.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "5ef2a8b5-f11f-42b4-97ce-70537c2327e9"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:07:22.423Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Estender o método compose para adicionar widgets de listagem."
+        },
+        {
+          "path": "styles.tcss",
+          "type": "TO_MODIFY",
+          "description": "Adicionar seletores de ID para novos widgets."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para widgets da área de listagem.",
+          "lineStart": 81,
+          "lineEnd": 84
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro de 'TaskManagerApp.compose()', após a 'area_adicionar_tarefa':\n```python\n# (imports necessários: ListView, ListItem de textual.widgets)\nfrom textual.widgets import ListView, ListItem # Adicionar se não estiverem presentes\n\n# ... dentro do método compose(), após o Container('area_adicionar_tarefa') ...\n        with Container(id=\"area_listagem_tarefas\"):\n            yield Static(\"Tarefas Pendentes:\", id=\"label_tarefas_pendentes\")\n            yield ListView(id=\"listview_tarefas\")\n            yield Button(\"Concluir Selecionada\", id=\"botao_concluir\", disabled=True)\n```\nEm 'styles.tcss', adicionar seletores básicos para os novos IDs.",
+      "verificationCriteria": "A UI exibe a área de listagem com o título, uma ListView vazia e o botão 'Concluir Selecionada' desabilitado.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 4 concluída: Método 'compose' em 'app.py' atualizado para incluir Container 'area_listagem_tarefas' com Static 'label_tarefas_pendentes', ListView 'listview_tarefas', e Button 'botao_concluir' (disabled=True). Imports de ListView e ListItem adicionados. Seletores de ID básicos para os novos widgets adicionados a 'styles.tcss'. A UI agora exibe a área de listagem de tarefas.",
+      "completedAt": "2025-05-19T21:07:22.422Z"
+    },
+    {
+      "id": "9ff302b6-e328-48a5-a3d1-a7e93c5b7dd9",
+      "name": "Tarefa 5: Implementação do Método de Atualização da ListView",
+      "description": "Em 'app.py', criar um método '_atualizar_listview_tarefas(self)'. Este método deve limpar a 'ListView#listview_tarefas', obter as tarefas ativas chamando 'self.obter_tarefas_ativas_logica()', e repopular a 'ListView' com instâncias de 'ListItem'. Cada 'ListItem' deve exibir a prioridade e descrição da tarefa e armazenar o ID da tarefa.",
+      "notes": "O `ListItem` pode ser um widget customizado herdando de `ListItem` para melhor controle e estilização, mas um `ListItem` contendo um `Label` é suficiente inicialmente. Armazenar `tarefa_data` no `ListItem.data` é crucial para obter o ID da tarefa depois.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "2a46b66a-d1d2-4726-be1d-b76d700b9f32"
+        },
+        {
+          "taskId": "ded268b0-3f53-44bd-a252-8262d081c477"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:08:02.909Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Adicionar método _atualizar_listview_tarefas e chamá-lo no momento apropriado (ex: on_mount)."
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro da classe 'TaskManagerApp':\n```python\n# (ListItem já deve ter sido importado)\n# (Adicionar 'from textual.widgets import Label' se for usar Label dentro do ListItem)\n\n    async def _atualizar_listview_tarefas(self) -> None:\n        listview = self.query_one(ListView)\n        await listview.clear() # Usar await se clear for async, senão listview.clear()\n        tarefas_ordenadas = self.obter_tarefas_ativas_logica()\n        for tarefa_data in tarefas_ordenadas:\n            # Criar um ListItem customizado ou usar um Label simples\n            # Exemplo simples com Label, pode ser melhorado para um ListItem customizado\n            item_label = f\"[P{tarefa_data['prioridade']}] {tarefa_data['descricao']}\"\n            list_item = ListItem(Label(item_label)) # Envolver com Label para exibição\n            list_item.data = tarefa_data # Armazenar todos os dados da tarefa no ListItem\n            await listview.append(list_item) # Usar await se append for async\n```\nChamar `self.mount_list_view_items()` ou similar no `on_mount` para popular inicialmente, ou após o `compose` se for síncrono.",
+      "verificationCriteria": "O método '_atualizar_listview_tarefas' está implementado. Se houver tarefas de teste em 'self.tarefas_ativas', elas são exibidas na ListView quando a aplicação inicia.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 5 concluída: Método '_atualizar_listview_tarefas' implementado em 'app.py' para limpar a ListView '#listview_tarefas', obter tarefas ativas via 'obter_tarefas_ativas_logica', e popular a ListView com ListItems (contendo Labels formatadas com prioridade e descrição). O 'data' de cada ListItem armazena os dados da tarefa. Método 'on_mount' adicionado para chamar '_atualizar_listview_tarefas' na inicialização. Import de 'Label' adicionado.",
+      "completedAt": "2025-05-19T21:08:02.907Z"
+    },
+    {
+      "id": "9a43ca02-bf12-4e6f-ab0a-e262802af6e4",
+      "name": "Tarefa 6: Funcionalidade de Adicionar Tarefa",
+      "description": "Implementar o manipulador de eventos para 'Button#botao_adicionar.Pressed'. Ele deve: ler a descrição do 'Input#input_descricao' e a prioridade do 'RadioSet#radioset_prioridade', chamar 'self.adicionar_tarefa_logica()', limpar os campos de input, chamar 'self._atualizar_listview_tarefas()', e exibir uma mensagem de feedback no 'Footer'.",
+      "notes": "Validar se a descrição não está vazia e se uma prioridade foi selecionada. A forma de obter o valor do RadioSet e limpá-lo pode precisar de ajuste conforme a API do Textual.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "2a46b66a-d1d2-4726-be1d-b76d700b9f32"
+        },
+        {
+          "taskId": "9ff302b6-e328-48a5-a3d1-a7e93c5b7dd9"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:08:45.930Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Adicionar manipulador de evento para o botão de adicionar tarefa."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para interações do botão Adicionar Tarefa.",
+          "lineStart": 91,
+          "lineEnd": 96
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro da classe 'TaskManagerApp':\n```python\nfrom textual.widgets import Input, RadioSet, Button # Assegurar imports\nfrom textual import on # Para o decorador @on\n\n    @on(Button.Pressed, \"#botao_adicionar\")\n    async def handle_adicionar_tarefa_pressed(self) -> None:\n        input_descricao = self.query_one(Input)\n        radioset_prioridade = self.query_one(RadioSet)\n        descricao = input_descricao.value\n        prioridade_selecionada_id = radioset_prioridade.pressed_button.id if radioset_prioridade.pressed_button else None\n\n        if not descricao.strip():\n            self.query_one(Footer).show_message(\"Erro: Descrição não pode ser vazia.\")\n            return\n\n        prioridade_valor = None\n        if prioridade_selecionada_id == \"prioridade_1\": prioridade_valor = 1\n        elif prioridade_selecionada_id == \"prioridade_2\": prioridade_valor = 2\n        elif prioridade_selecionada_id == \"prioridade_3\": prioridade_valor = 3\n        \n        if prioridade_valor is None:\n            self.query_one(Footer).show_message(\"Erro: Selecione uma prioridade.\")\n            return\n\n        self.adicionar_tarefa_logica(descricao, prioridade_valor)\n        input_descricao.value = \"\" # Limpar input\n        # Idealmente, resetar RadioSet para um valor padrão ou limpar seleção se aplicável\n        # radioset_prioridade.pressed_button = None # Pode não ser a forma correta de limpar, verificar docs Textual\n        await self._atualizar_listview_tarefas()\n        self.query_one(Footer).show_message(\"Tarefa adicionada com sucesso!\")\n```",
+      "verificationCriteria": "Clicar em 'Adicionar Tarefa' com descrição e prioridade preenchidas adiciona a tarefa à ListView e exibe mensagem no Footer. Inputs são limpos. Validações de input funcionam.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 6 concluída: Manipulador de evento '@on(Button.Pressed, \"#botao_adicionar\") async def handle_adicionar_tarefa_pressed' implementado em 'app.py'. Lê descrição de '#input_descricao' e prioridade de '#radioset_prioridade'. Valida se descrição não está vazia e se prioridade foi selecionada, exibindo notificações de erro via 'self.notify'. Chama 'adicionar_tarefa_logica', limpa 'input_descricao.value', chama '_atualizar_listview_tarefas' e notifica sucesso. Import de 'on' adicionado.",
+      "completedAt": "2025-05-19T21:08:45.929Z"
+    },
+    {
+      "id": "e7fb3d86-31b8-4bcd-9877-8025753faa0b",
+      "name": "Tarefa 7: Funcionalidade de Selecionar e Concluir Tarefa",
+      "description": "Implementar manipuladores de evento para 'ListView#listview_tarefas.Selected' e 'Button#botao_concluir.Pressed'. Ao selecionar um item na ListView, habilitar o botão 'Concluir Selecionada'. Ao clicar em 'Concluir Selecionada', obter o ID da tarefa do item selecionado, chamar 'self.marcar_tarefa_concluida_logica()', chamar 'self._atualizar_listview_tarefas()', e exibir mensagem no Footer. Desabilitar o botão 'Concluir' se nenhuma tarefa estiver selecionada.",
+      "notes": "Garantir que 'listview.highlighted_child.data' contém o ID da tarefa. O botão 'Concluir' deve ser desabilitado após a conclusão ou se a seleção for perdida.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "2a46b66a-d1d2-4726-be1d-b76d700b9f32"
+        },
+        {
+          "taskId": "9ff302b6-e328-48a5-a3d1-a7e93c5b7dd9"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:09:51.275Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Adicionar manipuladores de evento para ListView e botão de concluir."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para interações da ListView e botão Concluir.",
+          "lineStart": 97,
+          "lineEnd": 106
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro da classe 'TaskManagerApp':\n```python\nfrom textual.widgets import ListView # Assegurar import\n\n    @on(ListView.Selected, \"#listview_tarefas\")\n    def handle_listview_selected(self, event: ListView.Selected) -> None:\n        botao_concluir = self.query_one(\"#botao_concluir\", Button)\n        if event.item is not None: # Um item está selecionado\n            botao_concluir.disabled = False\n        else:\n            botao_concluir.disabled = True\n\n    @on(Button.Pressed, \"#botao_concluir\")\n    async def handle_concluir_tarefa_pressed(self) -> None:\n        listview = self.query_one(ListView)\n        if listview.highlighted_child and hasattr(listview.highlighted_child, 'data') and listview.highlighted_child.data:\n            id_tarefa_selecionada = listview.highlighted_child.data['id']\n            resultado = self.marcar_tarefa_concluida_logica(id_tarefa_selecionada)\n            if resultado:\n                await self._atualizar_listview_tarefas()\n                self.query_one(Footer).show_message(f\"Tarefa '{resultado['descricao'][:20]}...' concluída!\")\n                self.query_one(\"#botao_concluir\", Button).disabled = True # Desabilitar após concluir\n            else:\n                self.query_one(Footer).show_message(\"Erro ao concluir tarefa.\")\n        else:\n            self.query_one(Footer).show_message(\"Nenhuma tarefa selecionada para concluir.\")\n```",
+      "verificationCriteria": "Selecionar uma tarefa habilita o botão 'Concluir'. Clicar em 'Concluir' remove a tarefa da lista e mostra mensagem. O botão é desabilitado corretamente.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 7 concluída: Manipulador '@on(ListView.Selected, \"#listview_tarefas\") def handle_listview_selected' habilita/desabilita '#botao_concluir' com base na seleção. Manipulador '@on(Button.Pressed, \"#botao_concluir\") async def handle_concluir_tarefa_pressed' obtém ID da tarefa de 'listview.highlighted_child.data', chama 'marcar_tarefa_concluida_logica', atualiza a ListView, notifica o usuário e desabilita o botão. Usa 'self.notify' para feedback.",
+      "completedAt": "2025-05-19T21:09:51.274Z"
+    },
+    {
+      "id": "ad99dcb0-5879-4a68-baa0-bc9d780d96c2",
+      "name": "Tarefa 8: Implementação dos Atalhos de Teclado (Bindings)",
+      "description": "Em 'app.py', definir o atributo 'BINDINGS' na classe 'TaskManagerApp' para incluir: 'Ctrl+Q' para sair da aplicação ('action_quit') e 'Ctrl+N' para focar no 'Input#input_descricao' ('action_focus_new_task_input'). Implementar os métodos de ação correspondentes.",
+      "notes": "'action_quit' pode usar 'self.exit()'. 'action_focus_new_task_input' deve usar 'self.query_one(...).focus()'.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "5ef2a8b5-f11f-42b4-97ce-70537c2327e9"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:10:39.890Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Adicionar BINDINGS e métodos de ação correspondentes."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para atalhos de teclado.",
+          "lineStart": 107,
+          "lineEnd": 107
+        }
+      ],
+      "implementationGuide": "Em 'app.py', dentro da classe 'TaskManagerApp':\n```python\n    BINDINGS = [\n        (\"ctrl+q\", \"quit\", \"Sair\"),\n        (\"ctrl+n\", \"focus_new_task_input\", \"Nova Tarefa\")\n    ]\n\n    def action_quit(self) -> None:\n        self.exit()\n\n    def action_focus_new_task_input(self) -> None:\n        self.query_one(\"#input_descricao\", Input).focus()\n```",
+      "verificationCriteria": "Pressionar Ctrl+Q fecha a aplicação. Pressionar Ctrl+N move o foco para o campo de descrição da nova tarefa.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 8 concluída: Atributo 'BINDINGS' definido na classe TaskManagerApp em 'app.py' com atalhos 'ctrl+q' para 'quit' e 'ctrl+n' para 'focus_new_task_input'. Métodos 'action_quit(self)' (chamando self.exit()) e 'action_focus_new_task_input(self)' (chamando self.query_one(\"#input_descricao\", Input).focus()) implementados.",
+      "completedAt": "2025-05-19T21:10:39.888Z"
+    },
+    {
+      "id": "bffc120c-e256-4db6-a46a-8f352315f884",
+      "name": "Tarefa 9: Estilização da Interface com TCSS",
+      "description": "Preencher o arquivo 'styles.tcss' com todas as regras de estilização necessárias para o Header, Footer, áreas de adicionar e listar tarefas, Inputs, RadioSet, Buttons (incluindo estados :hover, :disabled), ListView e ListItems (incluindo estados :hover, --current). Seguir as diretrizes de layout flexível, cores, bordas, espaçamento e feedback visual do 'DESIGN_DOCUMENT.md'.",
+      "notes": "Consultar 'DESIGN_DOCUMENT.md' seção 3.5 para detalhes de estilização. Usar variáveis Textual como '$primary', '$surface'. Garantir feedback visual para todos os estados interativos.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "ded268b0-3f53-44bd-a252-8262d081c477"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:11:13.581Z",
+      "relatedFiles": [
+        {
+          "path": "styles.tcss",
+          "type": "TO_MODIFY",
+          "description": "Adicionar todas as regras de estilização."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Referência para estilização.",
+          "lineStart": 109,
+          "lineEnd": 120
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "Referência para uso de TCSS e IDs.",
+          "lineStart": 93,
+          "lineEnd": 97
+        }
+      ],
+      "implementationGuide": "Em 'styles.tcss':\n```tcss\n/* Exemplo de estrutura e alguns estilos - completar com base no DESIGN_DOCUMENT.md */\nScreen {\n    layout: vertical;\n    background: $surface;\n    color: $text;\n}\n\nHeader {\n    dock: top;\n    height: auto;\n    padding: 1;\n    background: $primary;\n    color: $text-primary-on-primary; /* Exemplo de cor de texto sobre primária */\n}\n\nFooter {\n    dock: bottom;\n    height: auto;\n    padding: 0 1;\n    background: $primary-darken-2; /* Exemplo */\n}\n\n#area_adicionar_tarefa,\n#area_listagem_tarefas {\n    padding: 1;\n    margin: 1;\n    border: round $primary;\n    height: auto;\n}\n\n#input_descricao {\n    margin-bottom: 1;\n}\n#input_descricao:focus {\n    border: tall $secondary;\n}\n\n#radioset_prioridade {\n    margin-bottom: 1;\n    layout: horizontal; /* Para alinhar os RadioButtons */\n}\n\n#listview_tarefas {\n    border: round $primary-lighten-2;\n    min-height: 5; /* Exemplo de altura mínima */\n}\n\nListItem {\n    padding: 1;\n}\n\nListItem:hover {\n    background: $primary-background-hover;\n}\n\nListItem.--current {\n    background: $secondary;\n    color: $text-secondary-on-secondary;\n}\n\nButton {\n    width: auto;\n    margin-top: 1;\n}\n\nButton:hover {\n    background: $primary-hover;\n}\n\nButton.--disabled {\n    background: $primary-darken-3;\n    color: $text-disabled;\n    text-style: dim;\n}\n\n.label_secao {\n    padding-bottom: 1;\n    text-style: bold;\n}\n```",
+      "verificationCriteria": "A interface está completamente estilizada conforme o 'DESIGN_DOCUMENT.md', com layout, cores, bordas, espaçamentos e feedback visual adequados para todos os widgets e seus estados.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Tarefa 9 concluída: Arquivo 'styles.tcss' preenchido com regras TCSS para Screen, Header, Footer, #area_adicionar_tarefa, #area_listagem_tarefas, #input_descricao (:focus), #radioset_prioridade (layout horizontal), #listview_tarefas, ListItem (:hover, .--current), Button (:hover, .--disabled), e .label_secao. Estilização básica conforme o DESIGN_DOCUMENT.md aplicada.",
+      "completedAt": "2025-05-19T21:11:13.580Z"
+    },
+    {
+      "id": "f34633d0-4d9c-45b5-9db6-0bfba690436c",
+      "name": "Tarefa 10: Testes Finais e Refatoração",
+      "description": "Realizar testes manuais completos de todas as funcionalidades: adicionar tarefa, visualizar tarefas (verificar ordenação), selecionar tarefa, concluir tarefa, usar atalhos de teclado. Verificar se todas as regras do 'shrimp-rules.md' (nomenclatura, formatação, comentários, separação lógica/UI) e especificações do 'DESIGN_DOCUMENT.md' foram atendidas. Refatorar o código conforme necessário para clareza, eficiência e conformidade.",
+      "notes": "Esta é uma tarefa de revisão e garantia de qualidade antes de considerar o escopo inicial como concluído.",
+      "status": "已完成",
+      "dependencies": [
+        {
+          "taskId": "e1f4a40a-35a2-4f30-9770-6dc6f6363c53"
+        },
+        {
+          "taskId": "2a46b66a-d1d2-4726-be1d-b76d700b9f32"
+        },
+        {
+          "taskId": "5ef2a8b5-f11f-42b4-97ce-70537c2327e9"
+        },
+        {
+          "taskId": "ded268b0-3f53-44bd-a252-8262d081c477"
+        },
+        {
+          "taskId": "9ff302b6-e328-48a5-a3d1-a7e93c5b7dd9"
+        },
+        {
+          "taskId": "9a43ca02-bf12-4e6f-ab0a-e262802af6e4"
+        },
+        {
+          "taskId": "e7fb3d86-31b8-4bcd-9877-8025753faa0b"
+        },
+        {
+          "taskId": "ad99dcb0-5879-4a68-baa0-bc9d780d96c2"
+        },
+        {
+          "taskId": "bffc120c-e256-4db6-a46a-8f352315f884"
+        }
+      ],
+      "createdAt": "2025-05-19T20:58:16.527Z",
+      "updatedAt": "2025-05-19T21:14:42.346Z",
+      "relatedFiles": [
+        {
+          "path": "app.py",
+          "type": "TO_MODIFY",
+          "description": "Refatorar e adicionar comentários/docstrings conforme necessário."
+        },
+        {
+          "path": "styles.tcss",
+          "type": "TO_MODIFY",
+          "description": "Ajustes finais de estilo, se necessário."
+        },
+        {
+          "path": "DESIGN_DOCUMENT.md",
+          "type": "REFERENCE",
+          "description": "Lista de verificação final contra o design."
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "Lista de verificação final contra as regras."
+        }
+      ],
+      "implementationGuide": "Revisar todo o código em 'app.py' e 'styles.tcss'. Executar a aplicação e testar cada funcionalidade passo a passo. Verificar a saída no terminal (se houver logs de erro) e o comportamento da UI. Confirmar que os nomes de variáveis, funções, classes e IDs estão corretos. Adicionar docstrings e comentários onde necessário.",
+      "verificationCriteria": "Todas as funcionalidades operam conforme esperado. O código está limpo, bem documentado e segue todas as diretrizes e especificações. Não há erros visíveis ou de lógica.",
+      "analysisResult": "O objetivo é desenvolver um Gerenciador de Tarefas de Terminal interativo usando Python e Textual. As funcionalidades principais incluem adicionar, visualizar e concluir tarefas, com uma interface de usuário baseada em Textual. O desenvolvimento deve aderir estritamente às especificações dos arquivos 'DESIGN_DOCUMENT.md' e 'shrimp-rules.md'. A persistência de dados não está no escopo inicial.",
+      "summary": "Testes manuais completos realizados. Funcionalidades de adicionar, visualizar, selecionar e concluir tarefas operam conforme esperado. Atalhos de teclado funcionam. Código em app.py e styles.tcss refatorado para clareza, docstrings adicionadas, e conformidade com shrimp-rules.md e DESIGN_DOCUMENT.md verificada. Pequenas correções na lógica de UI (limpeza de RadioSet, notificação de adição) implementadas. Nomenclatura, formatação e separação de preocupações estão adequadas.",
+      "completedAt": "2025-05-19T21:14:42.345Z"
+    }
+  ]
+}

@@ -1,157 +1,107 @@
-/* Definição de variáveis de cor para um tema escuro */
+/* Estilos para o Gerenciador de Tarefas Moderno */
 Screen {
-    background: $surface-darken-1;
+    layout: vertical;
+    background: $surface;
     color: $text;
 }
 
-/* Estilização do Header e Footer */
 Header {
     dock: top;
-    height: 3;
-    background: $primary-background;
-    color: $text;
-    content-align: center middle;
-    border-bottom: solid $primary;
+    height: auto;
+    padding: 1;
+    background: $primary;
+    color: $foreground; /* Cor de texto principal, para contraste com o fundo */
 }
 
 Footer {
     dock: bottom;
-    height: 1;
-    background: $primary-background-darken-1;
-    color: $text-muted;
-    border-top: solid $primary-darken-1;
-}
-/* Barra de Status */
-.status-bar {
-    dock: bottom;
-    height: 1;
-    padding: 0 1;
-    background: $primary-darken-2;
-    color: $text;
-    content-align: center middle; /* Centraliza o texto na barra de status */
-}
-
-/* Container Principal */
-#main_container {
-    padding: 1;
-    layout: vertical;
-    height: 1fr; /* Crucial para ocupar o espaço restante */
-}
-
-/* Área de Adicionar Tarefa */
-#add_task_area {
     height: auto;
-    padding: 1;
-    margin-bottom: 1;
-    border: round $primary-background-lighten-1;
-    background: $surface;
-}
-
-#add_task_area Input {
-    margin-bottom: 1;
-}
-
-#add_task_area RadioSet {
-    layout: horizontal;
-    width: auto;
-    margin-bottom: 1;
-}
-
-#add_task_area RadioButton {
-    width: auto;
-    margin-right: 2;
-}
-
-#add_task_area Button {
-    width: 100%;
-    min-width: 15; /* Largura mínima para botões */
-}
-
-/* Área de Listagem de Tarefas Ativas */
-#active_tasks_area {
-    layout: vertical;
-    padding: 1;
-    border: round $secondary-background;
-    background: $surface;
-    height: 1fr; /* Ocupa o espaço restante */
-}
-
-#active_tasks_label {
-    margin-bottom: 1;
-    text-style: bold;
-}
-
-#active_tasks_list {
-    background: $surface-lighten-1;
-    border: round $primary-background-darken-2;
-    height: 1fr; /* Ocupa o espaço vertical restante na seção */
-}
-
-/* Estilização de Itens da Lista */
-TaskListItem {
-    padding: 1;
-    background: $surface; /* Fundo padrão do item */
-}
-
-TaskListItem:hover {
-    background: $primary-background-lighten-2;
-}
-
-TaskListItem.--current { /* Classe para item selecionado (se você adicionar via Python) */
-    background: $primary;
-    color: $text-primary;
-}
-
-/* Estilização de Widgets Específicos */
-Input {
-    border: tall $primary-background-darken-1;
     padding: 0 1;
+    background: $primary-darken-2; /* Exemplo */
 }
 
-Input:focus {
-    border: tall $primary;
+#area_adicionar_tarefa {
+    padding: 1;
+    margin: 1;
+    border: round $primary;
+    height: auto; /* Mantém a altura automática para a área de adicionar tarefa */
+}
+
+#area_listagem_tarefas {
+    padding: 1;
+    margin: 1;
+    border: round $primary;
+    height: 1fr; /* Faz esta área ocupar o espaço vertical restante */
+    layout: vertical; /* Garante o layout vertical para o ListView e o botão */
+}
+
+#input_descricao {
+    margin-bottom: 0; /* Reduzido */
+    padding-left: 1;
+    padding-right: 1;
+}
+#input_descricao:focus {
+    border: tall $secondary;
+}
+
+#radioset_prioridade {
+    margin-bottom: 0; /* Reduzido */
+    layout: horizontal; /* Para alinhar os RadioButtons */
+    width: 1fr;         /* Divide o espaço igualmente com o botão */
+    margin-right: 1;    /* Adiciona um espaço entre o RadioSet e o Botão */
+}
+
+#container_prioridade_botao {
+    layout: horizontal;      /* Organiza RadioSet e Button lado a lado */
+    height: auto;            /* Altura baseada no conteúdo */
+    width: 1fr;              /* Faz o container ocupar a largura disponível */
+    margin-top: 1;         /* Reduzido espaço acima deste container */
+}
+
+#listview_tarefas {
+    border: round $primary-lighten-2;
+    /* min-height: 5; */ /* Removido para permitir altura flexível total */
+    height: 1fr; /* Faz a ListView preencher a altura do seu container pai */
+}
+
+ListItem {
+    padding: 1;
+}
+
+ListItem:hover {
+    background: $primary-background; /* Sugestão do Textual para hover de item de lista */
+}
+
+ListItem.--current { /* Estilo para o item selecionado/destacado */
+    background: $secondary;
+    color: $foreground; /* Cor de texto principal, para contraste com o fundo secundário */
 }
 
 Button {
-    min-width: 20; /* Largura mínima para botões */
-    height: 3;
-    border: round $primary;
-    background: $primary-background;
-    color: $text;
+    width: auto;
+    margin-top: 0; /* Reduzido */
+    width: 1fr;    /* Divide o espaço igualmente com o RadioSet */
+    /* dock: right; Removido */
+}
+
+#botao_concluir { /* Estilo específico para o botão Concluir Selecionada */
+    dock: bottom;            /* Ancorar na parte inferior do seu container pai (#area_listagem_tarefas) */
+    align-horizontal: right; /* Alinhar o botão à direita */
+    margin-top: 1;         /* Reduzido espaço acima do botão */
+    width: auto;             /* Largura baseada no conteúdo do botão */
 }
 
 Button:hover {
-    background: $primary-background-lighten-1;
-    border: round $primary-lighten-1;
+    background: $primary-darken-1; /* Escurece a cor primária para o estado hover */
 }
 
-Button.--disabled,
-Button:disabled { /* Estilo para botões desabilitados */
-    background: $primary-background-darken-2;
+Button.--disabled { /* Estilo para o botão desabilitado */
+    background: $primary-darken-3;
     color: $text-disabled;
-    border: round $primary-darken-2;
     text-style: dim;
 }
 
-/* Estilização específica para o botão de concluir */
-#complete_task_button {
-    margin-top: 1;
-    width: 100%;
-}
-
-/* Estilização para RadioButton para melhor integração */
-RadioButton {
-    padding: 0 1;
-}
-
-RadioButton:focus > .radiobutton--button {
-    border: round $primary; /* Destaque no foco */
-}
-
-RadioButton > .radiobutton--button {
-    border: round $primary-background-darken-1;
-}
-
-RadioButton:hover > .radiobutton--button {
-    border: round $primary-lighten-1;
+.label_secao {
+    padding-bottom: 1; /* Reduzido espaço abaixo do label */
+    text-style: bold;
 }
