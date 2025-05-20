@@ -1,0 +1,178 @@
+# Plano de Design: Gerenciador de Tarefas de Terminal (com Textual)
+
+**Data de Criação:** 2025-05-19
+
+**Autor:** Roo (Assistente IA)
+
+**Versão:** 1.0
+
+## 1. Estruturas de Dados
+
+### Tarefa (Task)
+Representaremos cada tarefa como um objeto ou dicionário com os seguintes atributos:
+*   `id`: Um identificador único para a tarefa (ex: um número inteiro sequencial ou um UUID). Isso será útil para selecionar tarefas para completar.
+*   `descricao`: Uma string contendo o texto da tarefa.
+*   `prioridade`: Um número inteiro de 1 a 3 (1 = alta, 2 = média, 3 = baixa).
+*   `data_criacao`: Um timestamp ou data/hora de quando a tarefa foi criada. Isso será usado para ordenação secundária.
+
+### Listas de Tarefas
+*   `tarefas_ativas`: Uma lista (ou array) contendo objetos de Tarefa que estão pendentes.
+*   `tarefas_concluidas`: Uma lista (ou array) contendo objetos de Tarefa que foram marcadas como concluídas.
+
+### Exemplo em Pseudocódigo/JSON:
+```json
+// Exemplo de um objeto Tarefa
+{
+  "id": 1,
+  "descricao": "Implementar funcionalidade de login com Textual",
+  "prioridade": 1,
+  "data_criacao": "2025-05-19T14:30:00Z"
+}
+
+// Listas
+tarefas_ativas = [
+  { "id": 2, "descricao": "Escrever documentação da API com Textual", "prioridade": 2, "data_criacao": "2025-05-18T10:00:00Z" },
+  { "id": 1, "descricao": "Corrigir bug na interface Textual", "prioridade": 1, "data_criacao": "2025-05-19T09:00:00Z" }
+]
+
+tarefas_concluidas = [
+  { "id": 3, "descricao": "Configurar ambiente de desenvolvimento Textual", "prioridade": 1, "data_criacao": "2025-05-17T15:00:00Z" }
+]
+```
+
+## 2. Funcionalidades Principais (Lógica do Aplicativo)
+
+A lógica principal do aplicativo permanecerá semelhante, mas as interações serão mediadas pela interface Textual.
+
+*   **`adicionar_tarefa_logica(descricao, prioridade)`:**
+    *   Cria um novo objeto Tarefa com `id` único e `data_criacao`.
+    *   Adiciona a nova tarefa à lista `tarefas_ativas` (a estrutura de dados em memória).
+    *   Esta função será chamada internamente quando o usuário interagir com os widgets da UI para adicionar uma tarefa.
+
+*   **`obter_tarefas_ativas_logica()`:**
+    *   Ordena a lista `tarefas_ativas`:
+        1.  Primariamente por `prioridade` (ascendente, 1 primeiro).
+        2.  Secundariamente por `data_criacao` (ascendente, mais antigas primeiro) para tarefas com a mesma prioridade.
+    *   Retorna a lista ordenada. Esta lista será usada para popular os widgets da UI.
+
+*   **`marcar_tarefa_concluida_logica(id_tarefa)`:**
+    *   Busca a tarefa na `tarefas_ativas` pelo `id_tarefa`.
+    *   Se encontrada:
+        *   Remove a tarefa da lista `tarefas_ativas`.
+        *   Adiciona a tarefa à lista `tarefas_concluidas`.
+    *   Esta função será chamada internamente quando o usuário interagir com a UI para completar uma tarefa.
+
+## 3. Design da Interface com Textual (UI)
+
+Esta seção detalha como a interface do usuário será construída usando Textual.
+
+### Estrutura Geral da Aplicação (Python - Textual)
+*   A aplicação será uma classe que herda de `textual.app.App`.
+*   O método `compose()` será usado para definir a estrutura inicial dos widgets.
+*   Um arquivo `.tcss` (Textual CSS) será usado para a estilização principal (ex: `styles.tcss`).
+
+### Layout Principal
+*   **`Header`:** Um widget `Header` no topo, exibindo o título da aplicação (ex: "Gerenciador de Tarefas Moderno").
+*   **`Container` Principal:** Abaixo do Header, um container que ocupará a maior parte da tela, possivelmente organizado com `VerticalScroll` ou `Container` aninhados:
+    *   **Área de Adicionar Tarefa:**
+        *   `Input` para a descrição da tarefa (com placeholder "Nova tarefa...").
+        *   `RadioSet` ou `Select` para escolher a prioridade (1, 2, 3).
+        *   `Button` com o texto "Adicionar Tarefa" (e talvez um ícone).
+    *   **Área de Listagem de Tarefas Ativas:**
+        *   `Label` ou `Static` como título (ex: "Tarefas Pendentes:").
+        *   `ListView` para exibir as tarefas ativas. Cada item na `ListView` será um `ListItem` que pode ser estilizado para mostrar a prioridade (talvez com cor), descrição e um ID.
+        *   Um `Button` "Concluir Selecionada" que se torna ativo/visível quando uma tarefa é selecionada na `ListView`.
+*   **`Footer`:** Um widget `Footer` na parte inferior, para exibir atalhos de teclado (bindings) ou mensagens de status (ex: "Tarefa adicionada!", "Tarefa X concluída.").
+
+### Widgets Chave e Interações
+*   **`Header`:** Estático, para título. Pode incluir um subtítulo ou logo simples.
+*   **`Input` (Descrição da Tarefa):** Permite entrada de texto.
+*   **`RadioSet` / `Select` (Prioridade):** Oferece opções predefinidas (1-Alta, 2-Média, 3-Baixa).
+*   **`Button` ("Adicionar Tarefa"):**
+    *   Ao ser clicado (ou Enter no campo de input), lê os valores do `Input` de descrição e do `RadioSet`/`Select` de prioridade.
+    *   Chama `adicionar_tarefa_logica()`.
+    *   Atualiza a `ListView` de tarefas ativas.
+    *   Limpa os campos de entrada.
+    *   Exibe uma breve mensagem no `Footer`.
+*   **`ListView` (Tarefas Ativas):**
+    *   Populada dinamicamente a partir de `obter_tarefas_ativas_logica()`.
+    *   Os itens são ordenados.
+    *   Permite a seleção de um item (highlight visual).
+*   **`Button` ("Concluir Selecionada"):**
+    *   Habilitado/visível apenas quando uma tarefa está selecionada na `ListView`.
+    *   Ao ser clicado, obtém o `id` da tarefa selecionada.
+    *   Chama `marcar_tarefa_concluida_logica()`.
+    *   Atualiza a `ListView` de tarefas ativas.
+    *   Exibe uma breve mensagem no `Footer`.
+*   **`Footer`:** Exibe informações contextuais e atalhos (ex: `Ctrl+Q` para Sair, `Ctrl+N` para focar no input de nova tarefa).
+
+### Estilização (TCSS - `styles.tcss`)
+*   **Cores e Tema:** Definir um esquema de cores moderno (ex: paleta escura com destaques vibrantes, ou um tema claro e limpo). Usar variáveis de cor do Textual (`$primary`, `$secondary`, `$surface`, `$text`, etc.).
+*   **Bordas e Espaçamento:** Usar `border`, `padding`, `margin` para criar uma separação clara entre as seções e os widgets. Bordas arredondadas (`border: round ...`) podem dar um toque moderno.
+*   **Layout Flexível:** Usar `layout: vertical | horizontal | grid`, e unidades `fr` para que a UI se adapte a diferentes tamanhos de terminal.
+*   **Tipografia:** Escolher fontes legíveis (se o terminal suportar) e tamanhos consistentes.
+*   **Feedback Visual:**
+    *   `Input:focus`: Mudar a borda ou fundo.
+    *   `ListItem:hover`: Mudar o fundo para indicar que o mouse está sobre.
+    *   `ListItem.--current`: Estilo para o item selecionado na `ListView`.
+    *   `Button:hover`: Mudar o fundo ou cor do texto.
+    *   `Button.--disabled`: Estilo para botões desabilitados.
+*   **Ícones (Opcional):** Se possível e desejado, usar caracteres Unicode simples como ícones (ex: ✔ para concluído, + para adicionar).
+
+## 4. Fluxo de Trabalho do Usuário (com Textual)
+
+1.  **Iniciar Aplicação:** O usuário executa o script Python. A interface Textual é renderizada.
+2.  **Adicionar Tarefa:**
+    *   Usuário digita a descrição no `Input`.
+    *   Seleciona a prioridade.
+    *   Clica em "Adicionar Tarefa" ou pressiona Enter.
+    *   A tarefa aparece na `ListView`.
+3.  **Visualizar Tarefas:**
+    *   A `ListView` exibe as tarefas pendentes.
+    *   O usuário pode usar as setas do teclado ou o mouse para navegar e selecionar tarefas.
+4.  **Marcar Tarefa como Concluída:**
+    *   Usuário seleciona uma tarefa na `ListView`.
+    *   Clica no botão "Concluir Selecionada".
+    *   A tarefa é removida da `ListView` de ativas.
+5.  **Sair da Aplicação:**
+    *   Usuário usa um atalho de teclado definido (ex: `Ctrl+Q`) ou fecha a janela do terminal.
+
+## 5. Diagrama de Fluxo (Mermaid - Conceitual)
+
+```mermaid
+graph TD
+    A[Início da Aplicação Textual] --> B(Interface Renderizada);
+    B -- Interação do Usuário --> C{Evento de UI?};
+    C -- "Input de Tarefa + Botão Adicionar Pressionado" --> D[Chamar adicionar_tarefa_logica()];
+    D -- Dados Atualizados --> E[Atualizar Widgets da UI (ListView, Footer)];
+    E --> B;
+    C -- "Seleção na ListView + Botão Completar Pressionado" --> F[Chamar marcar_tarefa_concluida_logica()];
+    F -- Dados Atualizados --> E;
+    C -- "Comando Sair (e.g., Binding Ctrl+Q)" --> G[Encerrar Aplicação];
+```
+
+## 6. Proposta de Gerenciamento de Dados
+
+*   **Armazenamento em Memória (Inicial):**
+    *   **Recomendação:** Para a primeira versão, as listas `tarefas_ativas` e `tarefas_concluidas` existirão apenas enquanto a aplicação estiver em execução.
+    *   **Prós:** Simplicidade de implementação.
+    *   **Contras:** Os dados são perdidos quando a aplicação é fechada.
+
+*   **Alternativa Futura (Armazenamento em Arquivo Simples - JSON):**
+    *   Se a persistência de dados for desejada em uma iteração futura:
+        *   **Formato:** JSON.
+        *   **Estrutura do Arquivo (`tasks.json`):**
+            ```json
+            {
+              "active_tasks": [
+                { "id": "uuid1", "descricao": "...", "prioridade": 1, "data_criacao": "..." }
+              ],
+              "completed_tasks": [
+                { "id": "uuid2", "descricao": "...", "prioridade": 2, "data_criacao": "..." }
+              ]
+            }
+            ```
+        *   **Operações:**
+            *   Ao iniciar, a aplicação tentaria ler `tasks.json`. Se existir e for válido, popularia as listas em memória.
+            *   Após cada operação que modifica os dados (adicionar, completar), a aplicação reescreveria o arquivo `tasks.json` com o estado atual das listas.
+            *   Considerar tratamento de erros para leitura/escrita do arquivo.

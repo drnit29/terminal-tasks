@@ -18,6 +18,8 @@ Footer {
     height: auto;
     padding: 0 1;
     background: $primary-darken-2; /* Exemplo */
+    visibility: visible !important; /* Garante que o Footer permaneça visível */
+    opacity: 1 !important; /* Garante que o Footer permaneça totalmente visível */
 }
 
 #area_adicionar_tarefa {
@@ -77,6 +79,22 @@ ListItem.--current { /* Estilo para o item selecionado/destacado */
     color: $foreground; /* Cor de texto principal, para contraste com o fundo secundário */
 }
 
+/* Estilos para prioridades de tarefas */
+.prioridade_alta {
+    background: $primary-darken-1; /* Tom primário escuro para prioridade alta */
+    color: $foreground; /* Cor de texto para contraste com fundo primário */
+}
+
+.prioridade_media {
+    background: $primary; /* Tom primário para prioridade média */
+    color: $foreground; /* Cor de texto para contraste com fundo primário */
+}
+
+.prioridade_baixa {
+    background: $primary-lighten-1; /* Tom primário claro para prioridade baixa */
+    color: $text; /* Cor de texto para contraste com fundo claro */
+}
+
 Button {
     width: auto;
     margin-top: 0; /* Reduzido */
@@ -104,4 +122,69 @@ Button.--disabled { /* Estilo para o botão desabilitado */
 .label_secao {
     padding-bottom: 1; /* Reduzido espaço abaixo do label */
     text-style: bold;
+}
+
+/* Styles for ConfirmationDialog */
+ConfirmationDialog {
+    align: center middle;
+    background: rgba(0, 0, 0, 0.7); /* Darken the overlay slightly */
+}
+
+#confirmation_dialog_vertical {
+    width: 60%; /* Aumentar a largura para melhor legibilidade */
+    height: auto; /* Altura automática baseada no conteúdo */
+    min-width: 40; /* Aumentar a largura mínima */
+    max-width: 70%; /* Definir uma largura máxima */
+    padding: 1 2; /* Ajustar preenchimento */
+    background: #2d343c; /* Cinza escuro específico para corresponder à imagem */
+    border: round $primary; /* Usar a borda arredondada para manter o padrão da interface */
+    layout: vertical;
+    align-horizontal: center;
+}
+
+#confirmation_message {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2; /* More space below the message */
+    color: $text; /* Ensure text color matches the theme */
+}
+
+#confirmation_buttons_horizontal {
+    width: 100%;
+    align-horizontal: center;
+    height: auto;
+    margin-top: 1; /* Add some space above buttons */
+}
+
+#confirmation_buttons_horizontal Button {
+    margin: 0 2; /* More space between buttons */
+    width: auto; /* Buttons size to content */
+    min-width: 10; /* Aumentar a largura mínima dos botões */
+    padding: 1 2; /* Adicionar preenchimento interno aos botões */
+}
+
+#confirmation_buttons_horizontal Button:focus {
+    border: thick $primary; /* Adicionar uma borda destacada ao focar com a cor primária */
+    background: $primary-background; /* Mudar o fundo ao focar usando a cor primária */
+}
+
+/* Ensure button variants from app.py are styled if not covered by default Textual styles */
+#confirmation_buttons_horizontal Button.modal_button {
+    /* Specific styles for modal buttons if needed, e.g., overriding default button padding */
+}
+
+#yes_button {
+    background: $primary-lighten-1; /* Tom mais claro da cor primária */
+    color: $foreground; /* Garantir contraste */
+}
+#yes_button:hover {
+    background: $primary; /* Tom médio ao passar o mouse */
+}
+
+#no_button {
+    background: $primary-darken-1; /* Tom mais escuro da cor primária */
+    color: $foreground; /* Garantir contraste */
+}
+#no_button:hover {
+    background: $primary-darken-2; /* Tom ainda mais escuro ao passar o mouse */
 }

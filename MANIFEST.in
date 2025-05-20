@@ -1,0 +1,7 @@
+include pyproject.toml
+include DESIGN_DOCUMENT.md
+include shrimp-rules.md
+include tasks.json
+include textual-docs.txt
+graft src
+global-exclude *.py[cod] __pycache__ .DS_Store

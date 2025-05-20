@@ -1,0 +1,2 @@
+[console_scripts]
+terminal-tasks = terminal_tasks_app.app:main
